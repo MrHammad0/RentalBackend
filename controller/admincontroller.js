@@ -120,10 +120,47 @@ const updateAdmin = async (req, res) => {
     });
   }
 };
+const changepassword = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { oldpassword, newpassword, confirmpassword } = req.body;
+    if (!oldpassword || !newpassword || !confirmpassword) {
+      return res.status(400).json({ message: "all feild required" });
+    }
+    if (newpassword !== confirmpassword) {
+      return res.status(404).json({ message: "password not matched" });
+    }
+    const userexist = await userModel.findById(id);
+    if (!userexist) {
+      return res.status(404).json({ message: "not found" });
+    }
+    const compairepassword = await bcrypt.compare(
+      oldpassword,
+      userexist.password
+    );
+    if (!compairepassword) {
+      return res.status(404).json({ message: "incorrect password" });
+    }
+    const hashpassword = await bcrypt.hash(newpassword, 10);
+    await userModel.findByIdAndUpdate(id, { $set: { password: hashpassword } });
+    return res.status(201).json({
+      success: true,
+      message: "passworf uPDataed",
+      userexist,
+    });
+  } catch (error) {
+    res.status(401).json({
+      success: false,
+      message: error.message,
+      err: error,
+    });
+  }
+};
 module.exports = {
   createAdmin,
   loginAdmin,
   getAdmin,
   delAdmin,
   updateAdmin,
+  changepassword,
 };
