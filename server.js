@@ -3,7 +3,8 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 5080;
 const connectDB = require("./database/db");
-const vehicleRouter = require("./routes/route");
+const vehicleRouter = require("./routes/VehicleRoute");
+
 app.use(express.json());
 connectDB();
 
