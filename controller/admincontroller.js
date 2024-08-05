@@ -1,7 +1,7 @@
 const adminModel = require("../models/Admin");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-// const transporter = require("../middleware/transporter");
+const transporter = require("../middleware/transporter");
 
 const createAdmin = async (req, res) => {
   const hashpassword = await bcrypt.hash(req.body.password, 10);
@@ -120,10 +120,116 @@ const updateAdmin = async (req, res) => {
     });
   }
 };
+const changepassword = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { oldpassword, newpassword, confirmpassword } = req.body;
+    if (!oldpassword || !newpassword || !confirmpassword) {
+      return res.status(400).json({ message: "all feild required" });
+    }
+    if (newpassword !== confirmpassword) {
+      return res.status(404).json({ message: "password not matched" });
+    }
+    const userexist = await adminModel.findById(id);
+    if (!userexist) {
+      return res.status(404).json({ message: "not found" });
+    }
+    const compairepassword = await bcrypt.compare(
+      oldpassword,
+      userexist.password
+    );
+    if (!compairepassword) {
+      return res.status(404).json({ message: "incorrect password" });
+    }
+    const hashpassword = await bcrypt.hash(newpassword, 10);
+    await adminModel.findByIdAndUpdate(id, {
+      $set: { password: hashpassword },
+    });
+    return res.status(201).json({
+      success: true,
+      message: "passworf uPDataed",
+      userexist,
+    });
+  } catch (error) {
+    res.status(401).json({
+      success: false,
+      message: error.message,
+      err: error.message,
+    });
+  }
+};
+const forgotPasswordEmail = async (req, res) => {
+  const { email } = req.body;
+  try {
+    const Admin = await adminModel.findOne({ email });
+    // console.log(Admin);
+    if (!Admin) {
+      return res.status(404).json({ mesg: "User not found with this email" });
+    }
+
+    const token = jwt.sign(
+      { userId: Admin._id, email: Admin.email },
+      process.env.JWT_SECRET,
+      { expiresIn: "1h" }
+    );
+    console.log(token);
+    const resetPasswordUrl = `${process.env.FRONTEND_URL}/newpassword/${token}`;
+
+    const mailOptions = {
+      from: process.env.HOST_MAIL,
+      to: email,
+      subject: "Change Password",
+      text: `This is a reset password \n ${resetPasswordUrl}`,
+    };
+
+    const result = await transporter.sendMail(mailOptions, (err, info) => {
+      if (err) {
+        console.log("Error in email sending", err);
+      } else {
+        console.log(`Email sent: ${info.response}`);
+      }
+    });
+
+    console.log("Print", result);
+
+    return res.status(200).json({ mesg: `Email send to ${email}`, result });
+  } catch (error) {
+    return res.status(500).json({ success: false, mesg: error.message });
+  }
+};
+const forgotPassword = async (req, res) => {
+  const { token } = req.params;
+  const { newPassword } = req.body;
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    if (!decoded) {
+      return res.status(401).json({ mesg: "Token expires!" });
+    }
+
+    const { email } = decoded;
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    const Admin = await adminModel.findOneAndUpdate(
+      { email },
+      { password: hashedPassword }
+    );
+
+    return res
+      .status(200)
+      .json({ mesg: "password changed successfully", Admin });
+  } catch (error) {
+    return res.status(500).json({ mesg: error.message });
+  }
+};
 module.exports = {
   createAdmin,
   loginAdmin,
   getAdmin,
   delAdmin,
   updateAdmin,
+  changepassword,
+  forgotPasswordEmail,
+  forgotPassword,
 };
