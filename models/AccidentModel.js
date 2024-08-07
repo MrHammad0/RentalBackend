@@ -16,6 +16,7 @@ const AccidentVehicle = new mongoose.Schema(
     },
     AccidentDate: {
       type: Date,
+      default: Date.now,
     },
     DamageInfo: {
       type: String,
@@ -27,6 +28,6 @@ const AccidentVehicle = new mongoose.Schema(
   { timestamps: true }
 );
 
-const AccidentModel = ("AccidentVehicle", AccidentVehicle);
+const AccidentModel = mongoose.model("AccidentVehicle", AccidentVehicle);
 
 module.exports = AccidentModel;
