@@ -1,0 +1,18 @@
+const express = require("express");
+const {
+  createRent,
+  getSingleRent,
+  getAllRent,
+  deleteRent,
+  updateRent,
+} = require("../controller/rentalController");
+
+const rentalRoute = express.Router();
+
+rentalRoute.post("/createRent", createRent);
+rentalRoute.get("/getSingleRent/:id", getSingleRent);
+rentalRoute.get("/getAllRent", getAllRent);
+rentalRoute.delete("/deleteRent/:id", deleteRent);
+rentalRoute.patch("/updateRent/:id", updateRent);
+
+module.exports = rentalRoute;
