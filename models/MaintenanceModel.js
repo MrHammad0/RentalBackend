@@ -12,9 +12,12 @@ const Maintenane = new mongoose.Schema(
     cost: {
       type: String,
     },
-    vehiclePlate: {
-      type: String,
-    },
+    vehicle: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "vehicle",
+      },
+    ],
   },
   { timestamps: true }
 );

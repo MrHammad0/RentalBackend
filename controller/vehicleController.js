@@ -1,5 +1,6 @@
 const express = require("express");
 const VehicleModel = require("../models/vehicaleModel");
+const MilageModel = require("../models/Milage");
 const app = express();
 
 //create vehicle
@@ -124,3 +125,8 @@ exports.deleteVehicle = async (req, res) => {
     });
   }
 };
+
+// //milage and vehicle maintenance info
+// exports.getVehicleMilage = async (req, res) => {
+//   const milage = await MilageModel
+// }

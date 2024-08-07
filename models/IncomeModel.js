@@ -15,12 +15,18 @@ const Income = new mongoose.Schema(
     drivePay: {
       type: String,
     },
-    vehicle: {
-      type: String,
-    },
-    driver: {
-      type: String,
-    },
+    vehicle: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "vehicle",
+      },
+    ],
+    driver: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "driver",
+      },
+    ],
   },
   { timestamps: true }
 );

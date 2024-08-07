@@ -11,12 +11,18 @@ const Fines = new mongoose.Schema(
     location: {
       type: String,
     },
-    VehiclePate: {
-      type: String,
-    },
-    driverEmail: {
-      type: String,
-    },
+    vehicle: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "vehicle",
+      },
+    ],
+    driver: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "driver",
+      },
+    ],
   },
   { timestamps: true }
 );

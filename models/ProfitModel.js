@@ -2,15 +2,21 @@ const mongoose = require("mongoose");
 
 const profit = new mongoose.Schema(
   {
-    totalIncome: {
-      type: String,
-    },
-    totalExpense: {
-      type: String,
-    },
     profit: {
       type: String,
     },
+    income: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "income",
+      },
+    ],
+    expense: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "expense",
+      },
+    ],
   },
   { timestamps: true }
 );

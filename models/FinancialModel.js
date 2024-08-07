@@ -5,9 +5,7 @@ const financial = new mongoose.Schema(
     taxes: {
       type: String,
     },
-    income: {
-      type: String,
-    },
+
     expense: {
       type: String,
     },
@@ -20,6 +18,19 @@ const financial = new mongoose.Schema(
     opertaingExpense: {
       type: String,
     },
+
+    income: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "income",
+      },
+    ],
+    expense: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "expense",
+      },
+    ],
   },
   { timestamps: true }
 );
