@@ -15,11 +15,14 @@ const maintenanceRoute = require("./routes/maintenanceRoute");
 const maintenanceActivityRoute = require("./routes/maintenanceActiviyRoute");
 const operationRoute = require("./routes/operationalRoute");
 const rentalRoute = require("./routes/rentalRoute");
+const driverRoute = require("./routes/driverRoute");
+const adminRoute = require("./routes/adminRoute");
 
 app.use(express.json());
 connectDB();
 
 app.use("/api/v1", vehicleRouter);
+app.use("/api/v1", adminRoute);
 app.use("/api/v1", accidentRoute);
 app.use("/api/v1", comaplainRoute);
 app.use("/api/v1", fineRoute);
@@ -31,6 +34,7 @@ app.use("/api/v1", maintenanceRoute);
 app.use("/api/v1", maintenanceActivityRoute);
 app.use("/api/v1", operationRoute);
 app.use("/api/v1", rentalRoute);
+app.use("/api/v1", driverRoute);
 
 app.get("/", (res, req) => {
   console.log("Helo world");

@@ -15,12 +15,12 @@ const adminSchema = new mongoose.Schema({
     unique: true,
   },
 
-  //   products: [
-  //     {
-  //       type: mongoose.Schema.Types.ObjectId,
-  //       ref: "products",
-  //     },
-  //   ],
+  income: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "income",
+    },
+  ],
 });
 const adminModel = mongoose.model("admin", adminSchema);
 module.exports = adminModel;
