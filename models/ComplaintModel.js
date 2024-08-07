@@ -2,15 +2,6 @@ const mongoose = require("mongoose");
 
 const complaint = new mongoose.Schema(
   {
-    VehiclePlate: {
-      type: String,
-    },
-    driverName: {
-      type: String,
-    },
-    Email: {
-      type: String,
-    },
     InspectionDate: {
       type: String,
     },
@@ -20,6 +11,18 @@ const complaint = new mongoose.Schema(
     ResolutionDate: {
       type: String,
     },
+    vehicle: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "vehicle",
+      },
+    ],
+    driver: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "driver",
+      },
+    ],
   },
   { timestamps: true }
 );

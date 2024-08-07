@@ -2,15 +2,6 @@ const mongoose = require("mongoose");
 
 const AccidentVehicle = new mongoose.Schema(
   {
-    VehicleName: {
-      type: String,
-    },
-    VehicleNumber: {
-      type: String,
-    },
-    DriverInfo: {
-      type: String,
-    },
     AccidentLocation: {
       type: String,
     },
@@ -24,6 +15,24 @@ const AccidentVehicle = new mongoose.Schema(
     Expense: {
       type: Number,
     },
+    vehicle: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "vehicle",
+      },
+    ],
+    diverInfo: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "driver",
+      },
+    ],
+    expense: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "expense",
+      },
+    ],
   },
   { timestamps: true }
 );

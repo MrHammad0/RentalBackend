@@ -15,9 +15,12 @@ const Expense = new mongoose.Schema(
     vehiclePlate: {
       type: String,
     },
-    vehicle: {
-      type: String,
-    },
+    vehicle: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "vehicle",
+      },
+    ],
   },
   { timestamps: true }
 );

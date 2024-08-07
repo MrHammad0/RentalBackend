@@ -10,18 +10,6 @@ const Rental = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
-    driverName: {
-      type: String,
-    },
-    email: {
-      type: String,
-    },
-    vehicle: {
-      type: String,
-    },
-    vehiclePlate: {
-      type: String,
-    },
     rate: {
       type: String,
     },
@@ -31,6 +19,18 @@ const Rental = new mongoose.Schema(
     totolCost: {
       type: String,
     },
+    vehicle: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "vehicle",
+      },
+    ],
+    driver: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "driver",
+      },
+    ],
   },
   { timestamps: true }
 );

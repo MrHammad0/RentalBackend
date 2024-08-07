@@ -23,6 +23,12 @@ const driver = new mongoose.Schema(
     hireDate: {
       type: String,
     },
+    vehicle: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "vehicle",
+      },
+    ],
   },
   { timestamps: true }
 );

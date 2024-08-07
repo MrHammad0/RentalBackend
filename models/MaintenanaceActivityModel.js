@@ -15,9 +15,12 @@ const MaintenaneActivity = new mongoose.Schema(
     serviceProvider: {
       type: String,
     },
-    vehicle: {
-      type: String,
-    },
+    vehicle: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "vehicle",
+      },
+    ],
   },
   { timestamps: true }
 );
